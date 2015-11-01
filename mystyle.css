@@ -1,3 +1,22 @@
-canvas#outline{
-    pointer-events: none;
+#content{
+  vertical-align: middle;
+}
+
+#toolbar{
+  min-width: 5em;
+  height: 75vh;
+  background-color: gray;
+}
+
+#base{
+  z-index: -1;
+  pointer-events: none;
+}
+
+#myCanvas{
+  z-index: 0;
+}
+
+body{
+  display: flex;
 }
