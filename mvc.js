@@ -9,33 +9,37 @@ var stitchSide = stitchLength / Math.sqrt(2) + stitchThick;
 var canvasBase = document.getElementById('base');
 var base = canvasBase.getContext('2d');
 
-//Making the background a
-base.fillStyle = '#F5F6CE';
-base.fillRect(0, 0, canvasBase.width, canvasBase.height);
-
 //Setting line width and color
 //an equation to make the line width the same as cross part of the cross stitch
 base.lineWidth = Math.sqrt(2) * stitchThick;
 base.strokeStyle = '#BDBDBD';
 
 //A method that draws the grid background
-function drawAida(){
+function drawAida() {
+  var height = Math.floor(canvasBase.height/stitchSide) * stitchSide;
+  var width = Math.floor(canvasBase.width/stitchSide) * stitchSide;
 
-    for(var i = 0; i * stitchSide + stitchSide < canvasBase.height - stitchSide; i ++){
-        base.beginPath();
-        base.moveTo(stitchSide + stitchSide * i, stitchSide);
-        base.lineTo(stitchSide + stitchSide * i, stitchSide);
-        base.lineTo(stitchSide + stitchSide * i, canvasBase.height - stitchSide);
-        base.closePath();
-        base.stroke();
+  //Making the background a
+  base.fillStyle = '#F5F6CE';
+  base.fillRect(0, 0, width, height);
 
+    for (var i = 0; i * stitchSide <= width + stitchSide; i ++){
         base.beginPath();
-        base.moveTo(stitchSide, stitchSide + stitchSide * i);
-        base.lineTo(stitchSide, stitchSide + stitchSide * i);
-        base.lineTo(canvasBase.width - stitchSide, stitchSide + stitchSide * i);
+        base.moveTo(stitchSide * i, 0);
+        base.lineTo(stitchSide * i, 0);
+        base.lineTo(stitchSide * i, height);
         base.closePath();
         base.stroke();
     }
+
+    for (var i = 0; i * stitchSide <= height + stitchSide; i ++){
+        base.beginPath();
+        base.moveTo(0, stitchSide * i);
+        base.lineTo(0, stitchSide * i);
+        base.lineTo(width, stitchSide * i);
+        base.closePath();
+        base.stroke();
+      }
 }
 
 drawAida();
@@ -52,10 +56,8 @@ canvas.addEventListener("mouseup", onMouseUp, false);
 
 //prints an x where you clicked.
 function onMouseDown(event){
-  if(boundsCheck(event.pageX, event.pageY)){
-    printStitch(event.pageX, event.pageY);
-  }
-  mouseDown = true;
+      printStitch(event.pageX, event.pageY);
+      mouseDown = true;
 }
 
 //makes it so that mouseDown is false
@@ -66,35 +68,14 @@ function onMouseUp(event){
 //Prints an x as long as the mouse is moving and held down
 function onMouseMove(event){
   if(mouseDown){
-      if(boundsCheck(event.pageX, event.pageY)){
       printStitch(event.pageX, event.pageY);
-    }
   }
 }
-
-//Checks to see if the mouse is in the bounds
-function boundsCheck(x, y){
-    if(x < 2 * stitchSide){
-      return false;
-    }
-
-    if(x > canvasBase.width - 2 * stitchSide){
-      return false;
-    }
-
-    if(y < 2 * stitchSide){
-      return false;
-    }
-
-    if(y > canvasBase.height - 2 * stitchSide){
-      return false;
-    }
-
-    return true;
-}
-
 //Prints a red cross stitch to the closest overlap point on the grid
 function printStitch(x, y){
+  var rect = canvas.getBoundingClientRect();
+  x = x - rect.left;
+  y = y - rect.top;
   rightCrossStitch(Math.round(x/stitchSide) * stitchSide,
   Math.round(y/stitchSide) * stitchSide, stitchThick, stitchLength, 'red');
 }
