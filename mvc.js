@@ -65,7 +65,6 @@ canvas.addEventListener("mouseup",   function(){mouseDown = false;}
 canvas.addEventListener('touchstart', function(event){
         event.preventDefault();
         printStitch(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
-        console.log("start");
     }, false);
 
 canvas.addEventListener('touchmove', function(event){
@@ -77,31 +76,29 @@ canvas.addEventListener('touchmove', function(event){
           else {
             printStitch(changes[0].clientX, changes[0].clientY);
           }
-
-          console.log("moving");
     }, false);
 
-canvas.addEventListener('touchend', function(event){event.preventDefault(); console.log("end");}, false);
+canvas.addEventListener('touchend', function(event){event.preventDefault();}, false);
 
-canvas.addEventListener('touchcancel', function(event){event.preventDefault(); console.log("cancel");}, false);
+canvas.addEventListener('touchcancel', function(event){event.preventDefault();}, false);
 
 
 //Checks to make sure the x is in the bounds
 function boundsCheck(x, y)
 {
-    if(x < BOUND_RECT.left + stitchThick){
+    if(x < BOUND_RECT.left + 2 * stitchThick){
       return false;
     }
 
-    if(x > BOUND_RECT.right - stitchThick){
+    if(x > BOUND_RECT.right - 1.5 * stitchSide){
       return false;
     }
 
-    if(y < BOUND_RECT.top + stitchThick){
+    if(y < BOUND_RECT.top + 2 * stitchThick){
        return false;
     }
 
-    if( y > BOUND_RECT.bottom - stitchThick){
+    if( y > BOUND_RECT.bottom - 1.5 * stitchSide){
       return false;
     }
 
