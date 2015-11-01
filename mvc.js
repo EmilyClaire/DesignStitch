@@ -51,6 +51,7 @@ drawAida();
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 var mouseDown = false;
+var isDrawing = false;
 
 canvas.addEventListener("mousedown", function(event){printStitch(event.pageX, event.pageY);
       mouseDown = true;}, false);
@@ -60,6 +61,21 @@ canvas.addEventListener("mousemove", function(event){  if(mouseDown){
 
 canvas.addEventListener("mouseup",   function(){mouseDown = false;}
 , false);
+
+canvas.addEventListener("touchstart", function(event){
+        isDrawing = true;
+    }, false);
+
+canvas.addEventListener('touchmove', function(event){
+      if(isDrawing){
+        printStitch(event.changedTouches[event.changedTouches.length - 1].clientX, event.changedTouches[event.changedTouches.length - 1].clientY);
+        event.preventDefault();
+    }}, false)
+
+
+canvas.addEventListener("touchend", function(event){
+    isDrawing = false;
+    }, false);
 
 //Checks to make sure the x is in the bounds
 function boundsCheck(x, y)
