@@ -9,6 +9,8 @@ var stitchSide = stitchLength / Math.sqrt(2) + stitchThick;
 var canvasBase = document.getElementById('base');
 var base = canvasBase.getContext('2d');
 
+var BOUND_RECT = canvasBase.getBoundingClientRect();
+
 //Setting line width and color
 //an equation to make the line width the same as cross part of the cross stitch
 base.lineWidth = Math.sqrt(2) * stitchThick;
@@ -71,13 +73,37 @@ function onMouseMove(event){
       printStitch(event.pageX, event.pageY);
   }
 }
+
+//Checks to make sure the x is in the bounds
+function boundsCheck(x, y)
+{
+    if(x < BOUND_RECT.left + stitchThick){
+      return false;
+    }
+
+    if(x > BOUND_RECT.right - stitchThick){
+      return false;
+    }
+
+    if(y < BOUND_RECT.top + stitchThick){
+       return false;
+    }
+
+    if( y > BOUND_RECT.bottom - stitchThick){
+      return false;
+    }
+
+    return true;
+}
 //Prints a red cross stitch to the closest overlap point on the grid
 function printStitch(x, y){
-  var rect = canvas.getBoundingClientRect();
-  x = x - rect.left;
-  y = y - rect.top;
-  rightCrossStitch(Math.round(x/stitchSide) * stitchSide,
-  Math.round(y/stitchSide) * stitchSide, stitchThick, stitchLength, 'red');
+  if(boundsCheck(x, y)){
+    x = x - BOUND_RECT.left;
+    y = y - BOUND_RECT.top;
+
+    rightCrossStitch(Math.round(x/stitchSide) * stitchSide,
+    Math.round(y/stitchSide) * stitchSide, stitchThick, stitchLength, 'red');
+  }
 }
 
 //Setting the line width for the outline of the stitches
