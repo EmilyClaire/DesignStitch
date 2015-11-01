@@ -52,27 +52,14 @@ var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 var mouseDown = false;
 
-canvas.addEventListener("mousedown", onMouseDown, false);
-canvas.addEventListener("mousemove", onMouseMove, false);
-canvas.addEventListener("mouseup", onMouseUp, false);
+canvas.addEventListener("mousedown", function(event){printStitch(event.pageX, event.pageY);
+      mouseDown = true;}, false);
 
-//prints an x where you clicked.
-function onMouseDown(event){
-      printStitch(event.pageX, event.pageY);
-      mouseDown = true;
-}
+canvas.addEventListener("mousemove", function(event){  if(mouseDown){
+      printStitch(event.pageX, event.pageY);}}, false);
 
-//makes it so that mouseDown is false
-function onMouseUp(event){
-  mouseDown = false;
-}
-
-//Prints an x as long as the mouse is moving and held down
-function onMouseMove(event){
-  if(mouseDown){
-      printStitch(event.pageX, event.pageY);
-  }
-}
+canvas.addEventListener("mouseup",   function(){mouseDown = false;}
+, false);
 
 //Checks to make sure the x is in the bounds
 function boundsCheck(x, y)
