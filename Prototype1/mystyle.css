@@ -1,0 +1,20 @@
+#content{
+  vertical-align: middle;
+}
+
+#toolbar{
+  background-color: gray;
+}
+
+#base{
+  z-index: -1;
+  pointer-events: none;
+}
+
+#myCanvas{
+  z-index: 0;
+}
+
+body{
+  display: flex;
+}
